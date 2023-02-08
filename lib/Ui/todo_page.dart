@@ -1,5 +1,8 @@
 import 'package:demo_app/Ui/create_note.dart';
+import 'package:demo_app/models/todo_model.dart';
 import 'package:flutter/material.dart';
+
+List todoList = [];
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
@@ -10,6 +13,11 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: Text("data")),
@@ -17,14 +25,14 @@ class _TodoScreenState extends State<TodoScreen> {
         children: [
           Expanded(
             child: GridView.builder(
-              itemCount: 3,
+              // itemCount: toDoList.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisSpacing: 3,
                 crossAxisSpacing: 4,
                 childAspectRatio: 0.9,
                 crossAxisCount: 2,
               ),
-              itemBuilder: (builder, context) {
+              itemBuilder: (context, index) {
                 return Card(
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
@@ -40,9 +48,10 @@ class _TodoScreenState extends State<TodoScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              "Title",
+                              "toDoList[index].title",
                               style: TextStyle(
                                   fontSize: 26, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
                             ),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(

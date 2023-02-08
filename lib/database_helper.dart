@@ -93,7 +93,7 @@ class DatabaseHelper {
 
     if (await Permission.storage.status.isGranted) {
       if (await dir.exists()) {
-        dir.delete();
+        // dir.delete();
         dir.create();
       } else {
         dir.create();

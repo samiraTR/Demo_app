@@ -1,7 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+
+import 'package:demo_app/Services/location.dart';
+import 'package:demo_app/models/todo_model.dart';
 
 class CreateScreen extends StatefulWidget {
-  const CreateScreen({super.key});
+  CreateScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CreateScreen> createState() => _CreateScreenState();
@@ -10,9 +18,69 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController textController = TextEditingController();
+  // String lat = "";
+  // String long = "";
+  // String address = "";
+  // List<ToDo> todoList = [];
+  double? lat;
+
+  double? long;
+
+  String address = "";
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  getLatLong() {
+    Future<Position> data = _determinePosition();
+    data.then((value) {
+      print("value $value");
+      setState(() {
+        lat = value.latitude;
+        long = value.longitude;
+      });
+
+      getAddress(value.latitude, value.longitude);
+    }).catchError((error) {
+      print("Error $error");
+    });
+  }
+
+  getAddress(lat, long) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    setState(() {
+      address = placemarks[0].street! + " " + placemarks[0].country!;
+    });
+    print(address);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -26,31 +94,16 @@ class _CreateScreenState extends State<CreateScreen> {
                 const Spacer(),
                 IconButton(
                   onPressed: () {
-                    String s = textController.text;
-                    List<String> x = s.split(" ");
-                    // var n;
-                    // for (int i = x.length - 1; i >= 0;) {
-                    //   print(x[i]);
-                    //   x.removeAt(i);
+                    // var splitBySpace;
+                    // splitBySpace = textController.text.split(" ");
+                    // splitBySpace.reversed.toList();
+                    // for (int i = 0; i < splitBySpace.length; i++) {
+                    //   splitBySpace.removeAt(i);
                     //   i--;
-                    //   print(x);
                     //   break;
                     // }
-
-                    // for (int i = x.length; i > x.length; i++) {
-                    //   x.removeLast();
-                    //   // i--;
-                    //   // print(x[i]);
-                    //   // x.removeLast();
-                    //   setState(() {});
-                    //   break;
-                    // }
-                    // String result = x.substring(0, x.length - 1);
-
-                    // print(result);
-                    setState(() {});
-                    // TextSelection.fromPosition();
-                    // print(x);
+                    // String d = splitBySpace.join(" ");
+                    // print(d);
                   },
                   icon: const Icon(Icons.rotate_left),
                 ),
@@ -59,7 +112,23 @@ class _CreateScreenState extends State<CreateScreen> {
                   icon: const Icon(Icons.rotate_right),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    getLatLong();
+                    List ab = [];
+                    final a = ToDo(
+                        id: 0,
+                        lat: lat.toString(),
+                        long: long.toString(),
+                        address: address,
+                        title: titleController.text,
+                        text: textController.text);
+
+                    Navigator.pop(context);
+
+                    print("address $address");
+                    print(lat.toString());
+                    print(long.toString());
+                  },
                   icon: const Icon(Icons.save),
                 ),
                 IconButton(
@@ -78,12 +147,35 @@ class _CreateScreenState extends State<CreateScreen> {
                     const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-              child: TextField(
-                controller: textController,
-                decoration: const InputDecoration(
-                    border: InputBorder.none, hintText: "Enter Your Text"),
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: SingleChildScrollView(
+                    child: TextField(
+                      controller: textController,
+                      maxLines: 28,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Enter Your Text"),
+                      onChanged: (value) {
+                        // var splitBySpace;
+                        // splitBySpace = value.split(" ");
+
+                        // for (int i = 0; i < splitBySpace.length; i++) {
+                        //   splitBySpace.removeAt(i);
+                        //   i--;
+                        //   break;
+                        // }
+                        // splitBySpace.join();
+                        // // var a = textDirectionToAxisDirection(TextDirection.rtl);
+
+                        // print(splitBySpace);
+                      },
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
