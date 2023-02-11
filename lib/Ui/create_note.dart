@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:demo_app/box/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,8 +8,12 @@ import 'package:demo_app/Services/location.dart';
 import 'package:demo_app/models/todo_model.dart';
 
 class CreateScreen extends StatefulWidget {
+  Function(List<ToDo>) todoFunc;
+  List<ToDo> ab;
   CreateScreen({
     Key? key,
+    required this.todoFunc,
+    required this.ab,
   }) : super(key: key);
 
   @override
@@ -18,6 +23,7 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController textController = TextEditingController();
+
   // String lat = "";
   // String long = "";
   // String address = "";
@@ -62,7 +68,7 @@ class _CreateScreenState extends State<CreateScreen> {
         lat = value.latitude;
         long = value.longitude;
       });
-
+      print(value.latitude);
       getAddress(value.latitude, value.longitude);
     }).catchError((error) {
       print("Error $error");
@@ -71,9 +77,12 @@ class _CreateScreenState extends State<CreateScreen> {
 
   getAddress(lat, long) async {
     List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
-    setState(() {
-      address = placemarks[0].street! + " " + placemarks[0].country!;
-    });
+
+    address = placemarks[0].street! + " " + placemarks[0].country!;
+
+    if (mounted) {
+      setState(() {});
+    }
     print(address);
   }
 
@@ -114,20 +123,29 @@ class _CreateScreenState extends State<CreateScreen> {
                 IconButton(
                   onPressed: () {
                     getLatLong();
-                    List ab = [];
-                    final a = ToDo(
-                        id: 0,
-                        lat: lat.toString(),
-                        long: long.toString(),
-                        address: address,
-                        title: titleController.text,
-                        text: textController.text);
+                    print(latitude.toString());
+                    if (titleController.text.isNotEmpty) {
+                      final a = ToDo(
+                          id: 0,
+                          lat: lat.toString(),
+                          long: long.toString(),
+                          address: address,
+                          title: titleController.text,
+                          text: textController.text);
+                      print(
+                          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddd${lat.toString()}");
 
-                    Navigator.pop(context);
+                      final box = boxes.getData();
+                      box.add(a);
+                      // widget.ab.add(a);
+                      // print(widget.ab);
+                      // widget.todoFunc(widget.ab);
+                      Navigator.pop(context);
 
-                    print("address $address");
-                    print(lat.toString());
-                    print(long.toString());
+                      print("address $address");
+                      print(lat.toString());
+                      print(long.toString());
+                    }
                   },
                   icon: const Icon(Icons.save),
                 ),

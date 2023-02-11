@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+part 'todo_model.g.dart';
+
+@HiveType(typeId: 0)
 class ToDo {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String lat;
+  @HiveField(2)
   String long;
+  @HiveField(3)
   String address;
+  @HiveField(4)
   String title;
+  @HiveField(5)
   String text;
 
   ToDo({
