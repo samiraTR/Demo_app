@@ -14,10 +14,10 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   List<ToDo> todoList = [];
+  List<ToDo> todoEditList = [];
 
   @override
   void initState() {
-    print(todoList);
     super.initState();
   }
 
@@ -31,7 +31,8 @@ class _TodoScreenState extends State<TodoScreen> {
             child: ValueListenableBuilder<Box<ToDo>>(
                 valueListenable: boxes.getData().listenable(),
                 builder: (context, box, _) {
-                  var todoList = box.values.toList()..cast<ToDo>();
+                  todoList = box.values.toList()..cast<ToDo>();
+
                   return GridView.builder(
                     itemCount: todoList.length,
                     gridDelegate:
@@ -76,8 +77,10 @@ class _TodoScreenState extends State<TodoScreen> {
                                         onPressed: () {
                                           print(
                                               "aaaaaaaaaaaaaaaaaaaaaaaaaaaa${todoList[index].lat}");
-                                          _openMap(todoList[index].lat,
-                                              todoList[index].long);
+                                          _openMap(
+                                              todoList[index].lat,
+                                              todoList[index].long,
+                                              todoList[index].address);
                                         },
                                         child: const Text("Loc")),
                                   )
@@ -115,7 +118,19 @@ class _TodoScreenState extends State<TodoScreen> {
                                             BorderRadius.circular(100),
                                       ),
                                       child: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CreateScreen(
+                                                      todoFunc: (val) {},
+                                                      todoListfromCreate: [
+                                                    todoList[index]
+                                                  ]),
+                                            ),
+                                          );
+                                        },
                                         icon: const Icon(
                                           Icons.edit,
                                           color: Colors.white,
@@ -134,7 +149,9 @@ class _TodoScreenState extends State<TodoScreen> {
                                             BorderRadius.circular(100),
                                       ),
                                       child: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          _delete(todoList[index]);
+                                        },
                                         icon: const Icon(
                                           Icons.delete,
                                           color: Colors.white,
@@ -171,7 +188,7 @@ class _TodoScreenState extends State<TodoScreen> {
                                     todoList = val;
                                   });
                                 },
-                                ab: todoList,
+                                todoListfromCreate: [],
                               )));
                 },
                 icon: const Icon(
@@ -189,13 +206,19 @@ class _TodoScreenState extends State<TodoScreen> {
     );
   }
 
-  Future<void> _openMap(String lat, String long) async {
-    print(lat);
-    print(long);
-    String googleURL = "https://maps.google.com/?q=$lat,$long";
+  Future<void> _openMap(String lat, String long, address) async {
+    // String googleURL = "https://maps.google.com/?q=$lat,$long";
+    String googleURL =
+        "https://www.google.com/maps/search/?api=1&query=$address";
 
-    await canLaunchUrlString(googleURL)
-        ? await launchUrlString(googleURL)
-        : throw ("error at $googleURL");
+    final String encodedURl = Uri.encodeFull(googleURL);
+
+    await canLaunchUrlString(encodedURl)
+        ? await launchUrlString(encodedURl)
+        : throw ("error at $encodedURl");
   }
+}
+
+void _delete(ToDo toDo) async {
+  await toDo.delete();
 }

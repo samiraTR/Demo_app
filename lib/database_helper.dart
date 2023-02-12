@@ -31,7 +31,7 @@ class DatabaseHelper {
     // Directory dir = Directory("/storage/emulated/0/download/SQL_folder");
     // downloadFolder();
     String path = p.join(dir.path, "groceries.db");
-    print(path);
+
     return await openDatabase(path, version: 3, onCreate: _onCreate);
   }
 
@@ -40,7 +40,7 @@ class DatabaseHelper {
   FutureOr<void> _onCreate(Database db, int version) async {
     String query =
         '''Create Table groceries(id INTEGER PRIMARY KEY, name TEXT)''';
-    print(query);
+
     await db.execute(query);
   }
 
@@ -104,7 +104,6 @@ class DatabaseHelper {
     }
     String path = p.join(dir.path, "groceries.db");
 
-    print(path);
     await openDatabase(path, version: 3, onCreate: _onCreate);
     // if(Permission.storage.isGranted){
 

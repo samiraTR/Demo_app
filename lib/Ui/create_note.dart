@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:camera/camera.dart';
+import 'package:demo_app/Services/image.dart';
 import 'package:demo_app/box/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -9,11 +11,11 @@ import 'package:demo_app/models/todo_model.dart';
 
 class CreateScreen extends StatefulWidget {
   Function(List<ToDo>) todoFunc;
-  List<ToDo> ab;
+  List<ToDo> todoListfromCreate;
   CreateScreen({
     Key? key,
     required this.todoFunc,
-    required this.ab,
+    required this.todoListfromCreate,
   }) : super(key: key);
 
   @override
@@ -23,6 +25,8 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController textController = TextEditingController();
+  CameraController? controller;
+  bool iscameraInitialized = false;
 
   // String lat = "";
   // String long = "";
@@ -33,6 +37,8 @@ class _CreateScreenState extends State<CreateScreen> {
   double? long;
 
   String address = "";
+  String Updatedlat = "";
+  var k;
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -63,12 +69,11 @@ class _CreateScreenState extends State<CreateScreen> {
   getLatLong() {
     Future<Position> data = _determinePosition();
     data.then((value) {
-      print("value $value");
       setState(() {
         lat = value.latitude;
         long = value.longitude;
       });
-      print(value.latitude);
+
       getAddress(value.latitude, value.longitude);
     }).catchError((error) {
       print("Error $error");
@@ -83,7 +88,15 @@ class _CreateScreenState extends State<CreateScreen> {
     if (mounted) {
       setState(() {});
     }
-    print(address);
+  }
+
+  @override
+  void initState() {
+    if (widget.todoListfromCreate.isNotEmpty) {
+      titleController.text = widget.todoListfromCreate.first.title;
+      textController.text = widget.todoListfromCreate.first.text;
+    }
+    super.initState();
   }
 
   @override
@@ -97,6 +110,7 @@ class _CreateScreenState extends State<CreateScreen> {
               children: [
                 BackButton(
                   onPressed: () {
+                    widget.todoListfromCreate.clear();
                     Navigator.pop(context);
                   },
                 ),
@@ -123,34 +137,56 @@ class _CreateScreenState extends State<CreateScreen> {
                 IconButton(
                   onPressed: () {
                     getLatLong();
-                    print(latitude.toString());
+
                     if (titleController.text.isNotEmpty) {
-                      final a = ToDo(
+                      final box = boxes.getData();
+
+                      // box.getAt(k);
+                      final todoData = ToDo(
                           id: 0,
                           lat: lat.toString(),
                           long: long.toString(),
                           address: address,
                           title: titleController.text,
                           text: textController.text);
-                      print(
-                          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddd${lat.toString()}");
 
-                      final box = boxes.getData();
-                      box.add(a);
-                      // widget.ab.add(a);
-                      // print(widget.ab);
-                      // widget.todoFunc(widget.ab);
-                      Navigator.pop(context);
-
-                      print("address $address");
-                      print(lat.toString());
-                      print(long.toString());
+                      if (widget.todoListfromCreate.isNotEmpty) {
+                        box.values.forEach((element) {
+                          if (widget.todoListfromCreate.first.title ==
+                              element.title) {
+                            k = element.key;
+                          }
+                        });
+                        box.put(k, todoData);
+                      } else {
+                        final todoData = ToDo(
+                            id: 0,
+                            lat: lat.toString(),
+                            long: long.toString(),
+                            address: address,
+                            title: titleController.text,
+                            text: textController.text);
+                        box.add(todoData);
+                      }
                     }
+                    Navigator.pop(context);
                   },
                   icon: const Icon(Icons.save),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final box = boxes.getData();
+                    if (widget.todoListfromCreate.isNotEmpty) {
+                      box.values.forEach((element) {
+                        if (widget.todoListfromCreate.first.title ==
+                            element.title) {
+                          k = element.key;
+                        }
+                      });
+                      box.delete(k);
+                    }
+                    Navigator.pop(context);
+                  },
                   icon: const Icon(Icons.delete),
                 )
               ],
@@ -163,6 +199,11 @@ class _CreateScreenState extends State<CreateScreen> {
                     border: InputBorder.none, hintText: "Enter Title"),
                 style:
                     const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+                // onChanged: (value) {
+                //   if (widget.todoListfromCreate.isNotEmpty) {
+                //     value = widget.todoListfromCreate.first.title;
+                //   }
+                // },
               ),
             ),
             SingleChildScrollView(
@@ -189,7 +230,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         // splitBySpace.join();
                         // // var a = textDirectionToAxisDirection(TextDirection.rtl);
 
-                        // print(splitBySpace);
+                        // (splitBySpace);
                       },
                     ),
                   ),
@@ -204,7 +245,7 @@ class _CreateScreenState extends State<CreateScreen> {
             context: context,
             builder: (context) {
               return Stack(
-                children: const [
+                children: [
                   Positioned(
                     left: 230,
                     top: 600,
@@ -212,13 +253,17 @@ class _CreateScreenState extends State<CreateScreen> {
                       height: 50,
                       width: 50,
                       child: Card(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(100),
                           ),
                         ),
                         color: Colors.white,
-                        child: Icon(Icons.camera),
+                        child: IconButton(
+                            onPressed: () {
+                              CameraFunctionality(context);
+                            },
+                            icon: Icon(Icons.camera)),
                       ),
                     ),
                   ),

@@ -50,8 +50,6 @@ class Location {
   getLatLong() {
     Future<Position> data = _determinePosition();
     data.then((value) {
-      print("value $value");
-
       lat = value.latitude;
       long = value.longitude;
 

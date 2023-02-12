@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 part 'todo_model.g.dart';
 
 @HiveType(typeId: 0)
-class ToDo {
+class ToDo extends HiveObject {
   @HiveField(0)
   int id;
   @HiveField(1)
