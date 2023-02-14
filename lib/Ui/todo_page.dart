@@ -29,7 +29,7 @@ class _TodoScreenState extends State<TodoScreen> {
         children: [
           Expanded(
             child: ValueListenableBuilder<Box<ToDo>>(
-                valueListenable: boxes.getData().listenable(),
+                valueListenable: Boxes.getData().listenable(),
                 builder: (context, box, _) {
                   todoList = box.values.toList()..cast<ToDo>();
 
@@ -75,8 +75,8 @@ class _TodoScreenState extends State<TodoScreen> {
                                         style: ElevatedButton.styleFrom(
                                             fixedSize: const Size(0, 0)),
                                         onPressed: () {
-                                          print(
-                                              "aaaaaaaaaaaaaaaaaaaaaaaaaaaa${todoList[index].lat}");
+                                          // print(
+                                          //     "aaaaaaaaaaaaaaaaaaaaaaaaaaaa${todoList[index].lat}");
                                           _openMap(
                                               todoList[index].lat,
                                               todoList[index].long,
@@ -188,7 +188,7 @@ class _TodoScreenState extends State<TodoScreen> {
                                     todoList = val;
                                   });
                                 },
-                                todoListfromCreate: [],
+                                todoListfromCreate: const [],
                               )));
                 },
                 icon: const Icon(
@@ -207,15 +207,15 @@ class _TodoScreenState extends State<TodoScreen> {
   }
 
   Future<void> _openMap(String lat, String long, address) async {
-    // String googleURL = "https://maps.google.com/?q=$lat,$long";
-    String googleURL =
-        "https://www.google.com/maps/search/?api=1&query=$address";
+    String googleURL = "https://maps.google.com/?q=$lat,$long";
+    // String googleURL =
+    //     "https://www.google.com/maps/search/?api=1&query=$address";
 
-    final String encodedURl = Uri.encodeFull(googleURL);
+    // final String encodedURl = Uri.encodeFull(googleURL);
 
-    await canLaunchUrlString(encodedURl)
-        ? await launchUrlString(encodedURl)
-        : throw ("error at $encodedURl");
+    await canLaunchUrlString(googleURL)
+        ? await launchUrlString(googleURL)
+        : throw ("error at $googleURL");
   }
 }
 

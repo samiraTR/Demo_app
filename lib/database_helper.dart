@@ -52,7 +52,7 @@ class DatabaseHelper {
     List<Grocery> groceryList = groceries.isNotEmpty
         ? groceries.map((e) => Grocery.fromMap(e)).toList()
         : [];
-    print("grocerylist from get grocery $groceryList");
+    // print("grocerylist from get grocery $groceryList");
     return groceryList;
   }
 ///////////////////////////////////insert Database Table //////////////////////////

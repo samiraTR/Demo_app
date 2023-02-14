@@ -23,13 +23,14 @@ class ToDoAdapter extends TypeAdapter<ToDo> {
       address: fields[3] as String,
       title: fields[4] as String,
       text: fields[5] as String,
+      imgPath: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ToDo obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class ToDoAdapter extends TypeAdapter<ToDo> {
       ..writeByte(4)
       ..write(obj.title)
       ..writeByte(5)
-      ..write(obj.text);
+      ..write(obj.text)
+      ..writeByte(6)
+      ..write(obj.imgPath);
   }
 
   @override

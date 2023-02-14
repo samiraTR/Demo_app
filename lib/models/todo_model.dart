@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -17,6 +18,8 @@ class ToDo extends HiveObject {
   String title;
   @HiveField(5)
   String text;
+  @HiveField(6)
+  String imgPath;
 
   ToDo({
     required this.id,
@@ -25,6 +28,7 @@ class ToDo extends HiveObject {
     required this.address,
     required this.title,
     required this.text,
+    required this.imgPath,
   });
 
   factory ToDo.fromMap(Map<String, dynamic> json) {
@@ -34,7 +38,8 @@ class ToDo extends HiveObject {
         long: json["long"],
         address: json["address"],
         title: json["title"],
-        text: json["text"]);
+        text: json["text"],
+        imgPath: json["imgPath"]);
   }
 
   Map<String, dynamic> toMap() {
@@ -44,7 +49,8 @@ class ToDo extends HiveObject {
       "long": long,
       "address": address,
       "title": title,
-      "text": text
+      "text": text,
+      "imgPath": imgPath
     };
   }
 }
