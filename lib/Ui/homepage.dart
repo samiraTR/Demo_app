@@ -35,50 +35,55 @@ class MyHomePageState extends State<MyHomePage> {
           ),
           // title:  Text('Syncfusion Flutter chart'),
         ),
-        endDrawer: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                DatabaseHelper.instance.downloadFolder();
-              },
-              child: const Text("Download"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  (MaterialPageRoute(
-                    builder: (context) => const TodoScreen(),
-                  )),
-                );
-              },
-              child: const Text("Create Task"),
-            ),
-            const Spacer(),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: IconButton(
-                icon: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                  child: const Icon(
-                    Icons.message,
-                    color: Colors.blue,
-                  ),
-                ),
+        endDrawer: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  DatabaseHelper.instance.downloadFolder();
+                },
+                child: const Text("Download"),
+              ),
+              ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MessageScreen()));
+                    context,
+                    (MaterialPageRoute(
+                      builder: (context) => const TodoScreen(),
+                    )),
+                  );
                 },
+                child: const Text("Create Task"),
               ),
-            )
-          ],
+              const Spacer(),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.white),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.message,
+                      color: Colors.blue,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MessageScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
         body: FutureBuilder<List<Grocery>>(
           future: DatabaseHelper.instance.getGroceries(),

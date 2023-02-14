@@ -1,9 +1,8 @@
 // import 'package:demo_app/Services/routes.dart' as route;
-import 'package:camera/camera.dart';
 import 'package:demo_app/Ui/homepage.dart';
 import 'package:demo_app/models/todo_model.dart';
+import 'package:demo_app/models/user_model.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,6 +35,7 @@ class ChartApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const MyHomePage(),
+      // home:  User.id == ""  ? const MyHomePage() : LoginPage(),
     );
   }
 }
