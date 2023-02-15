@@ -1,4 +1,4 @@
-import 'package:demo_app/Ui/Message/message_screen.dart';
+import 'package:demo_app/Ui/Message/friends_screen.dart';
 import 'package:demo_app/Ui/todo_page.dart';
 import 'package:demo_app/database_helper.dart';
 import 'package:demo_app/models/grocery_model.dart';
@@ -75,7 +75,7 @@ class MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MessageScreen(),
+                          builder: (context) => const FriendListScreen(),
                         ),
                       );
                     },
