@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_app/Services/firebase_services.dart';
 import 'package:demo_app/Ui/Message/message_screen.dart';
 import 'package:demo_app/Ui/Message/profile_screen.dart';
 import 'package:demo_app/models/user_model.dart';
@@ -32,7 +31,6 @@ class _FriendListScreenState extends State<FriendListScreen> {
       body: StreamBuilder<List<User>>(
         stream: readUsers(),
         builder: (context, snapshot) {
-          print(snapshot);
           if (snapshot.hasError) {
             return Text(" ${snapshot.error}");
           } else if (snapshot.hasData) {
@@ -46,6 +44,7 @@ class _FriendListScreenState extends State<FriendListScreen> {
                           MaterialPageRoute(
                               builder: (context) => MessageScreen(
                                     name: snapshot.data![index].name,
+                                    id: snapshot.data![index].id,
                                   )));
                     },
                     child: ListTile(
@@ -53,7 +52,7 @@ class _FriendListScreenState extends State<FriendListScreen> {
                       trailing: Container(
                         height: 45,
                         width: 38,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.red,
                         ),
@@ -63,13 +62,12 @@ class _FriendListScreenState extends State<FriendListScreen> {
                                 setState(() {
                                   final docUser = FirebaseFirestore.instance
                                       .collection("person")
-                                      .doc(snapshot.data?[index].id.toString())
-                                      .delete();
-                                  // docUser.delete();
+                                      .doc(snapshot.data?[index].id.toString());
+                                  docUser.delete();
                                 });
                                 print(snapshot.data![index].id.toString());
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.group_remove,
                                 color: Colors.white,
                               )),

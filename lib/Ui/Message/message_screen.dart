@@ -1,11 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+// import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_app/Services/firebase_services.dart';
 import 'package:flutter/material.dart';
+
+import 'package:demo_app/models/messages_model.dart';
 
 class MessageScreen extends StatefulWidget {
   String name;
+  String id;
   MessageScreen({
     Key? key,
     required this.name,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -24,8 +32,58 @@ class _MessageScreenState extends State<MessageScreen> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Expanded(
+              child: StreamBuilder(
+                  stream: readMessages(widget.id),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text(" ${snapshot.error}");
+                    } else if (snapshot.hasData) {
+                      return ListView.builder(
+                          reverse: true,
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Align(
+                                alignment:
+                                    snapshot.data?[index].msgFrom == widget.id
+                                        ? Alignment.bottomLeft
+                                        : Alignment.bottomRight,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: snapshot.data?[index].msgFrom ==
+                                              widget.id
+                                          ? Colors.blue
+                                          : Colors.amber,
+                                      borderRadius: snapshot
+                                                  .data?[index].msgFrom ==
+                                              widget.id
+                                          ? BorderRadius.circular(15).subtract(
+                                              const BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(12)))
+                                          : BorderRadius.circular(15).subtract(
+                                              const BorderRadius.only(
+                                                  bottomRight:
+                                                      Radius.circular(12)))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "${snapshot.data?[index].message}",
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          });
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  }),
+            ),
             Row(
               children: [
                 Expanded(
@@ -47,7 +105,18 @@ class _MessageScreenState extends State<MessageScreen> {
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.blue),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (messageController.text != "") {
+                          final msg = Message(
+                              message: messageController.text,
+                              createdAt: DateTime.now().toString(),
+                              msgFrom: widget.id,
+                              msgTo: "");
+                          messageController.clear();
+
+                          await FirebaseService().sendMessage(msg, widget.id);
+                        }
+                      },
                       icon: const Icon(Icons.send),
                     ),
                   ),
@@ -58,5 +127,17 @@ class _MessageScreenState extends State<MessageScreen> {
         ),
       ),
     );
+  }
+
+  Stream<List<Message>> readMessages(idUser) {
+    return FirebaseFirestore.instance
+        .collection("person/$idUser/messages")
+        .orderBy(MessageField.createdAt, descending: true)
+        .snapshots()
+        .map((event) {
+      return event.docs.map((doc) {
+        return Message.fromJson(doc.data());
+      }).toList();
+    });
   }
 }

@@ -190,10 +190,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         emailController.clear();
 
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const FriendListScreen()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FriendListScreen()),
+                        );
                       }
                       await Fluttertoast.showToast(
                           msg: "Please enter your Name");

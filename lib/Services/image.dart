@@ -1,1 +1,1 @@
-CameraFunctionality(context) {}
+

@@ -47,7 +47,7 @@ class _CreateScreenState extends State<CreateScreen> {
               children: [
                 BackButton(
                   onPressed: () {
-                    widget.todoListfromCreate.clear();
+                    // widget.todoListfromCreate.clear();
                     Navigator.pop(context);
                   },
                 ),
@@ -183,56 +183,57 @@ class _CreateScreenState extends State<CreateScreen> {
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
         showDialog(
-            context: context,
-            builder: (context) {
-              return Stack(
-                children: [
-                  Positioned(
-                    left: 230,
-                    top: 600,
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: Card(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(100),
-                          ),
+          context: context,
+          builder: (context) {
+            return Stack(
+              children: [
+                Positioned(
+                  left: 230,
+                  top: 600,
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Card(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(100),
                         ),
-                        color: Colors.white,
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CameraScreen()));
-                            },
-                            icon: const Icon(Icons.camera)),
                       ),
+                      color: Colors.white,
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CameraScreen()));
+                          },
+                          icon: const Icon(Icons.camera)),
                     ),
                   ),
-                  const Positioned(
-                    right: 30,
-                    bottom: 120,
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(100),
-                          ),
+                ),
+                const Positioned(
+                  right: 30,
+                  bottom: 120,
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(100),
                         ),
-                        color: Colors.white,
-                        child: Icon(Icons.image),
                       ),
+                      color: Colors.white,
+                      child: Icon(Icons.image),
                     ),
                   ),
-                  // Positioned(left: 260, top: 580, child: Icon(Icons.cable)),
-                ],
-              );
-            });
+                ),
+                // Positioned(left: 260, top: 580, child: Icon(Icons.cable)),
+              ],
+            );
+          },
+        );
       }),
     );
   }
