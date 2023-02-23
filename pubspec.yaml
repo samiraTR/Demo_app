@@ -42,7 +42,8 @@ dependencies:
   path_provider: ^2.0.12
   permission_handler: ^10.2.0
   sqflite_sqlcipher: ^2.1.1+1
-  syncfusion_flutter_charts: ^20.4.48
+  # sqflite: ^2.2.4+1
+  # syncfusion_flutter_charts: ^20.4.48
   url_launcher: ^6.1.9
 
 dev_dependencies:

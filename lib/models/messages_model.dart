@@ -7,31 +7,34 @@ class MessageField {
 class Message {
   String message;
   String createdAt;
-  String msgFrom;
+  String msgId;
   String msgTo;
+  String ksender;
 
   Message({
     required this.message,
     required this.createdAt,
-    required this.msgFrom,
+    required this.msgId,
     required this.msgTo,
+    required this.ksender,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      message: json["msg"],
-      createdAt: json["createdAt"],
-      msgFrom: json["msgFrom"],
-      msgTo: json["msgTo"] ?? "",
-    );
+        message: json["msg"],
+        createdAt: json["createdAt"],
+        msgId: json["msgFrom"],
+        msgTo: json["msgTo"] ?? "",
+        ksender: json["sender"] ?? "");
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "msgFrom": msgFrom,
+      "msgFrom": msgId,
       "msg": message,
       "createdAt": createdAt,
-      "msgTo": msgTo
+      "msgTo": msgTo,
+      "sender": ksender
     };
   }
 }

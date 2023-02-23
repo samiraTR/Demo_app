@@ -15,7 +15,7 @@ class FirebaseService {
   Future sendMessage(Message message, String idUser) async {
     var docUser =
         FirebaseFirestore.instance.collection("person/$idUser/messages").doc();
-    message.msgFrom = docUser.id;
+    message.msgId = docUser.id;
     var json = message.toJson();
     await docUser.set(json);
   }

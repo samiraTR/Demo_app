@@ -106,10 +106,9 @@ class MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 onLongPress: () async {
-                  // e.id == null
-                  //     ? await DatabaseHelper.instance.removeNull(e.id!)
-                  //     :
-                  await DatabaseHelper.instance.remove(e.id!);
+                  e.id == null
+                      ? await DatabaseHelper.instance.remove(e.id!)
+                      : await DatabaseHelper.instance.remove(e.id!);
                   setState(() {
                     nameController.text = "";
                   });

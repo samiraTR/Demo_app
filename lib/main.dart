@@ -1,5 +1,7 @@
 // import 'package:demo_app/Services/routes.dart' as route;
 import 'package:demo_app/Ui/homepage.dart';
+import 'package:demo_app/Ui/login_page.dart';
+import 'package:demo_app/Ui/register_page.dart';
 import 'package:demo_app/models/todo_model.dart';
 import 'package:demo_app/models/user_model.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,7 +36,7 @@ class ChartApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomePage(),
+      home: const RegisterScreen(),
       // home:  User.id == ""  ? const MyHomePage() : LoginPage(),
     );
   }

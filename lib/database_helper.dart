@@ -4,6 +4,7 @@ import 'package:demo_app/models/grocery_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
+// import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 
 class DatabaseHelper {
@@ -28,11 +29,11 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     Directory dir = await getApplicationDocumentsDirectory();
 
-    // Directory dir = Directory("/storage/emulated/0/download/SQL_folder");
+    // Directory dir = Directory("/storage/emulated/0/Download/SQL_folder");
     // downloadFolder();
     String path = p.join(dir.path, "groceries.db");
 
-    return await openDatabase(path, version: 3, onCreate: _onCreate);
+    return await openDatabase(path, version: 2, onCreate: _onCreate);
   }
 
 ///////////////////////////////////Create Database Table //////////////////////////
@@ -93,7 +94,7 @@ class DatabaseHelper {
 
     if (await Permission.storage.status.isGranted) {
       if (await dir.exists()) {
-        // dir.delete();
+        dir.delete();
         dir.create();
       } else {
         dir.create();
@@ -104,7 +105,8 @@ class DatabaseHelper {
     }
     String path = p.join(dir.path, "groceries.db");
 
-    await openDatabase(path, version: 3, onCreate: _onCreate);
+    // await openDatabase(path, version: 3, onCreate: _onCreate);
+    await openDatabase(path, version: 3, onCreate: _onCreate, password: '124');
     // if(Permission.storage.isGranted){
 
     // }

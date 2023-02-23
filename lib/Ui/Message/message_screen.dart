@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_app/Services/firebase_services.dart';
 import 'package:flutter/material.dart';
@@ -48,17 +45,17 @@ class _MessageScreenState extends State<MessageScreen> {
                               padding: const EdgeInsets.all(5.0),
                               child: Align(
                                 alignment:
-                                    snapshot.data?[index].msgFrom == widget.id
+                                    snapshot.data?[index].msgId == widget.id
                                         ? Alignment.bottomLeft
                                         : Alignment.bottomRight,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: snapshot.data?[index].msgFrom ==
+                                      color: snapshot.data?[index].msgId ==
                                               widget.id
                                           ? Colors.blue
                                           : Colors.amber,
                                       borderRadius: snapshot
-                                                  .data?[index].msgFrom ==
+                                                  .data?[index].msgId ==
                                               widget.id
                                           ? BorderRadius.circular(15).subtract(
                                               const BorderRadius.only(
@@ -110,8 +107,9 @@ class _MessageScreenState extends State<MessageScreen> {
                           final msg = Message(
                               message: messageController.text,
                               createdAt: DateTime.now().toString(),
-                              msgFrom: widget.id,
-                              msgTo: "");
+                              msgId: widget.id,
+                              msgTo: "",
+                              ksender: '');
                           messageController.clear();
 
                           await FirebaseService().sendMessage(msg, widget.id);

@@ -21,8 +21,10 @@ class _FriendListScreenState extends State<FriendListScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()));
             },
             icon: const Icon(Icons.person_add),
           )
