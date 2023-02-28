@@ -1,3 +1,4 @@
+import 'package:demo_app/Ui/graph_home_page.dart';
 import 'package:demo_app/Ui/homepage.dart';
 import 'package:demo_app/Ui/register_page.dart';
 import 'package:flutter/gestures.dart';
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           (MaterialPageRoute(
-                              builder: (context) => const MyHomePage())),
+                              builder: (context) => GraphHomePage())),
                           (Route<dynamic> route) => false);
                       print("login");
                     },

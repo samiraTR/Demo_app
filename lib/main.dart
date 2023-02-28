@@ -1,9 +1,7 @@
 // import 'package:demo_app/Services/routes.dart' as route;
-import 'package:demo_app/Ui/homepage.dart';
-import 'package:demo_app/Ui/login_page.dart';
 import 'package:demo_app/Ui/register_page.dart';
+import 'package:demo_app/config/theme/theme.dart';
 import 'package:demo_app/models/todo_model.dart';
-import 'package:demo_app/models/user_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +33,7 @@ class ChartApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: theme(),
       home: const RegisterScreen(),
       // home:  User.id == ""  ? const MyHomePage() : LoginPage(),
     );

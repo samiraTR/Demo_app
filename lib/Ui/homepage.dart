@@ -1,12 +1,17 @@
 import 'package:demo_app/Ui/Message/friends_screen.dart';
 import 'package:demo_app/Ui/todo_page.dart';
+import 'package:demo_app/bloc/counter_bloc.dart';
+import 'package:demo_app/bloc/counter_event.dart';
 import 'package:demo_app/database_helper.dart';
 import 'package:demo_app/models/grocery_model.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  // ignore: preferconstconstructorsinimmutables
-  const MyHomePage({Key? key}) : super(key: key);
+  // static var routeName = "MyHomePage";
+
+  // String routeName = "MyHomePage";
+
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   MyHomePageState createState() => MyHomePageState();
@@ -14,16 +19,21 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
   TextEditingController nameController = TextEditingController();
-  String routeName = "MyHomePage";
 
   int? selectedId;
-  // List<_SalesData> data = [
-  //   _SalesData('Jan', 35),
-  //   _SalesData('Feb', 28),
-  //   _SalesData('Mar', 34),
-  //   _SalesData('Apr', 32),
-  //   _SalesData('May', 40)
-  // ];
+
+  @override
+  void initState() {
+    // _bloc = CounterBloc();
+    super.initState();
+  }
+
+  // Route route() {
+  //   return MaterialPageRoute(
+  //       settings: RouteSettings(name: widget.routeName),
+  //       builder: (context) => MyHomePage());
+  // }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -95,10 +105,7 @@ class MyHomePageState extends State<MyHomePage> {
             }
             return ListView(
                 children: snapshot.data!.map((e) {
-              return ListTile(
-                leading: Text(
-                  e.name.toString(),
-                ),
+              return InkWell(
                 onTap: () {
                   setState(() {
                     nameController.text = e.name.toString();
@@ -113,6 +120,18 @@ class MyHomePageState extends State<MyHomePage> {
                     nameController.text = "";
                   });
                 },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                  child: buildRow(e),
+                ),
+
+                //  ListTile(
+                //   leading: Text(
+                //     e.name.toString(),
+                //   ),
+                //   trailing: Container(child: Text("1")),
+
+                // ),
               );
             }).toList());
           },
@@ -136,6 +155,38 @@ class MyHomePageState extends State<MyHomePage> {
           child: const Icon(Icons.abc_outlined),
         ),
       ),
+    );
+  }
+
+  Widget buildRow(Grocery e) {
+    final _bloc = CounterBloc();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(e.name.toString()),
+        StreamBuilder(
+            stream: _bloc.outCounter,
+            initialData: 0,
+            builder: (context, AsyncSnapshot<int> snapshotnv) {
+              var a;
+              return Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        _bloc.counterEventSink.add(IncrementEvent());
+                      },
+                      icon: const Icon(Icons.add)),
+                  Text(snapshotnv.data.toString()),
+                  IconButton(
+                      onPressed: () {
+                        _bloc.counterEventSink.add(DeccrementEvent());
+                      },
+                      icon: const Icon(Icons.remove)),
+                ],
+              );
+            })
+      ],
     );
   }
 }
