@@ -1,10 +1,13 @@
 // import 'package:demo_app/Services/routes.dart' as route;
+import 'package:demo_app/Services/api_repository.dart';
 import 'package:demo_app/Ui/register_page.dart';
+import 'package:demo_app/bloc/DictionaryBloc/dictionary_bloc_bloc.dart';
 import 'package:demo_app/config/theme/theme.dart';
 import 'package:demo_app/models/todo_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // List<CameraDescription> cameras = [];
@@ -31,11 +34,14 @@ class ChartApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.black));
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: theme(),
-      home: const RegisterScreen(),
-      // home:  User.id == ""  ? const MyHomePage() : LoginPage(),
+    return BlocProvider(
+      create: (context) => DictionaryBlocBloc(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme(),
+        home: RegisterScreen(),
+        // home:  User.id == ""  ? const MyHomePage() : LoginPage(),
+      ),
     );
   }
 }

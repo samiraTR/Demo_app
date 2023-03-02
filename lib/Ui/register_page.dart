@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Form(
           key: _formKey,
           child: Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text(
@@ -86,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Navigator.push(
                       context,
                       (MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => const LoginScreen(),
                       )),
                     );
                     print("Register");

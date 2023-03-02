@@ -11,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 
   // String routeName = "MyHomePage";
 
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   MyHomePageState createState() => MyHomePageState();

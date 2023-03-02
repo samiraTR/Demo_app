@@ -1,8 +1,11 @@
+import 'package:demo_app/Services/api_repository.dart';
 import 'package:demo_app/Ui/graph_home_page.dart';
 import 'package:demo_app/Ui/homepage.dart';
 import 'package:demo_app/Ui/register_page.dart';
+import 'package:demo_app/bloc/DictionaryBloc/dictionary_bloc_bloc.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
