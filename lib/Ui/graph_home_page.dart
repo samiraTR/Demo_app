@@ -101,45 +101,51 @@ class _GraphHomePageState extends State<GraphHomePage> {
             BlocBuilder<DictionaryBlocBloc, DictionaryBlocState>(
               buildWhen: (previous, current) => previous != current,
               builder: (context, state) {
-                print("nnnnnnnnnnnn${state.props.toString()}");
-                print("x1");
                 if (state is DictionaryBlocInitial) {
-                  print("x2");
-                  print("state x2 ${state.props}");
-
+                  return const Center(child: Text(""));
+                } else if (state is DictionaryBlocSearching) {
                   return const Center(child: CircularProgressIndicator());
-                }
-                //    else if (state is DictionaryBlocSearching) {
-                //     return Center(child: CircularProgressIndicator());
-                //  }
-                else if (state is DictionaryBlocSearched) {
-                  print("x3");
-                  print("event theke asha state${state.words}");
-                  List x = state.words;
-
+                } else if (state is DictionaryBlocSearched) {
                   return Expanded(
                     child: ListView.builder(
-                        itemCount: x.length,
-                        itemBuilder: (context, index) {
-                          print(state.words.length);
-                          return Column(
-                            children: [
-                              Text(state.words[index].word.toString())
-                            ],
-                          );
-                        }),
+                      shrinkWrap: true,
+                      itemCount: state.words.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text("Word: ${state.words[index].word} "),
+                            Text("Phonetic: ${state.words[index].phonetic}"),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: const ScrollPhysics(),
+                                itemCount: state.words[index].meanings.length,
+                                itemBuilder: (context, ind) {
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                            " ${state.words[index].meanings[ind].partOfSpeech}"),
+                                      ],
+                                    ),
+                                  );
+                                })
+                          ],
+                        );
+                      },
+                    ),
                   );
                 } else if (state is ErrorState) {
                   print("x4");
 
-                  return Container(
-                    child: Text("Error"),
-                  );
+                  return const Text("Error");
                 } else {
                   print("x5");
-                  return Container(
-                    child: Text("x5 Error"),
-                  );
+                  return const Text("x5 Error");
                 }
               },
             )
