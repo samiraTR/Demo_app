@@ -1,5 +1,6 @@
 import 'package:demo_app/Services/api_repository.dart';
 import 'package:demo_app/bloc/DictionaryBloc/dictionary_bloc_bloc.dart';
+import 'package:demo_app/models/dictionary_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -98,6 +99,7 @@ class _GraphHomePageState extends State<GraphHomePage> {
               ),
             ),
             BlocBuilder<DictionaryBlocBloc, DictionaryBlocState>(
+              buildWhen: (previous, current) => previous != current,
               builder: (context, state) {
                 print("nnnnnnnnnnnn${state.props.toString()}");
                 print("x1");
@@ -113,27 +115,30 @@ class _GraphHomePageState extends State<GraphHomePage> {
                 else if (state is DictionaryBlocSearched) {
                   print("x3");
                   print("event theke asha state${state.words}");
+                  List x = state.words;
 
-                  return ListView.builder(
-                      itemCount: state.words.length,
-                      itemBuilder: (context, index) {
-                        print(state.words.length);
-                        return Column(
-                          children: [
-                            Text(state.words[index].meanings.toString())
-                          ],
-                        );
-                      });
+                  return Expanded(
+                    child: ListView.builder(
+                        itemCount: x.length,
+                        itemBuilder: (context, index) {
+                          print(state.words.length);
+                          return Column(
+                            children: [
+                              Text(state.words[index].word.toString())
+                            ],
+                          );
+                        }),
+                  );
                 } else if (state is ErrorState) {
                   print("x4");
 
                   return Container(
-                    child: Text(state.toString()),
+                    child: Text("Error"),
                   );
                 } else {
                   print("x5");
                   return Container(
-                    child: Text(state.toString()),
+                    child: Text("x5 Error"),
                   );
                 }
               },
@@ -166,3 +171,55 @@ class _GraphHomePageState extends State<GraphHomePage> {
     );
   }
 }
+
+//  Container(
+//             color: Color.fromARGB(255, 8, 53, 90),
+//             height: 300,
+//             child: Column(
+//               children: [
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                   children: [
+//                     IconButton(
+//                       onPressed: () {},
+//                       icon: Icon(Icons.abc),
+//                     ),
+//                     TextButton(
+//                       onPressed: () {},
+//                       child: Text("Annex"),
+//                     ),
+//                     IconButton(
+//                         onPressed: () {}, icon: Icon(Icons.add_alert_rounded))
+//                   ],
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.fromLTRB(8, 40, 8, 8),
+//                   child: TextField(
+//                     controller: searchWordController,
+//                     decoration: InputDecoration(
+//                       filled: true,
+//                       fillColor: Colors.white,
+//                       prefixIcon: const Icon(Icons.search),
+//                       border: InputBorder.none,
+//                       enabledBorder: OutlineInputBorder(
+//                         borderRadius: BorderRadius.circular(12),
+//                         borderSide: BorderSide.none,
+//                         // const BorderSide(color: Colors.transparent),
+//                       ),
+//                     ),
+//                     onSubmitted: (value) {
+//                       print(searchWordController.text.toString());
+//                       print("x1");
+//                     },
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ),
+//           Expanded(
+//             child: ListView.builder(
+//                 itemCount: 2,
+//                 itemBuilder: (context, index) {
+//                   return Text(searchWordController.text.toString());
+//                 }),
+//           )

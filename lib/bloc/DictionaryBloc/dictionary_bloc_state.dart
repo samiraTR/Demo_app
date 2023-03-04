@@ -13,7 +13,7 @@ class DictionaryBlocSearching extends DictionaryBlocState {}
 
 class DictionaryBlocSearched extends DictionaryBlocState {
   final List<Dictionary> words;
-  DictionaryBlocSearched(this.words);
+  const DictionaryBlocSearched(this.words);
   List<Object> get props => [words];
 }
 

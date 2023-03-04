@@ -24,15 +24,16 @@ class DictionaryBlocBloc
         words = await repository.getWordsFromDictionary(event.query);
 
         Future.delayed(Duration(seconds: 3));
-        if (words.isNotEmpty) {
-          print("aftersearching +searching $words");
+        emit(DictionaryBlocSearched(words));
 
-          emit(DictionaryBlocSearched(words));
-        } else {
-          print("aftersearching +searching $words");
+        // if (words.isNotEmpty) {
+        //   print("aftersearching +searching $words");
 
-          emit(DictionaryBlocInitial());
-        }
+        // } else {
+        //   print("aftersearching +searching $words");
+
+        //   emit(DictionaryBlocInitial());
+        // }
 
         // if (words == null) {
         //   emit(ErrorState("Words are not Found"));
