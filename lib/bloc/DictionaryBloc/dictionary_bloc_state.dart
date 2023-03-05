@@ -20,5 +20,5 @@ class DictionaryBlocSearched extends DictionaryBlocState {
 class ErrorState extends DictionaryBlocState {
   final message;
   const ErrorState(this.message);
-  List<Object> get props => [message];
+  List<Object> get props => [message]; // state compare props
 }

@@ -4,7 +4,9 @@ import 'package:demo_app/Ui/register_page.dart';
 import 'package:demo_app/bloc/DictionaryBloc/dictionary_bloc_bloc.dart';
 import 'package:demo_app/config/theme/theme.dart';
 import 'package:demo_app/models/todo_model.dart';
+import 'package:demo_app/utils/constant.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +18,9 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoAdapter());
   await Hive.openBox<ToDo>("todoList");
-  await Firebase.initializeApp();
+  await Firestore.initialize(projectID);
+  // await Firebase.initializeApp();
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // try {
   //   cameras = await availableCameras();
