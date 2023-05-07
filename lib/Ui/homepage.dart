@@ -1,4 +1,5 @@
 import 'package:demo_app/Ui/Message/friends_screen.dart';
+import 'package:demo_app/Ui/hierarchy_page.dart';
 import 'package:demo_app/Ui/todo_page.dart';
 import 'package:demo_app/bloc/counter_bloc.dart';
 import 'package:demo_app/bloc/counter_event.dart';
@@ -68,6 +69,17 @@ class MyHomePageState extends State<MyHomePage> {
                 },
                 child: const Text("Create Task"),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    (MaterialPageRoute(
+                      builder: (context) => const HierarchyScreen(),
+                    )),
+                  );
+                },
+                child: const Text("Hierarchy User"),
+              ),
               const Spacer(),
               Align(
                 alignment: Alignment.bottomLeft,
@@ -95,46 +107,61 @@ class MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        body: FutureBuilder<List<Grocery>>(
-          future: DatabaseHelper.instance.getGroceries(),
-          builder: (context, AsyncSnapshot<List<Grocery>> snapshot) {
-            if (!snapshot.hasData) {
-              return const Text("Loading");
-            } else if (snapshot.data!.isEmpty) {
-              return const Text("No Grocery List");
-            }
-            return ListView(
-                children: snapshot.data!.map((e) {
-              return InkWell(
-                onTap: () {
-                  setState(() {
-                    nameController.text = e.name.toString();
-                    selectedId = e.id!;
-                  });
-                },
-                onLongPress: () async {
-                  e.id == null
-                      ? await DatabaseHelper.instance.remove(e.id!)
-                      : await DatabaseHelper.instance.remove(e.id!);
-                  setState(() {
-                    nameController.text = "";
-                  });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
-                  child: buildRow(e),
-                ),
+        body: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  (MaterialPageRoute(
+                    builder: (context) => const HierarchyScreen(),
+                  )),
+                );
+              },
+              child: const Text("Hierarchy User"),
+            ),
+            FutureBuilder<List<Grocery>>(
+              future: DatabaseHelper.instance.getGroceries(),
+              builder: (context, AsyncSnapshot<List<Grocery>> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Text("Loading");
+                } else if (snapshot.data!.isEmpty) {
+                  return const Text("No Grocery List");
+                }
+                return ListView(
+                    children: snapshot.data!.map((e) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        nameController.text = e.name.toString();
+                        selectedId = e.id!;
+                      });
+                    },
+                    onLongPress: () async {
+                      e.id == null
+                          ? await DatabaseHelper.instance.remove(e.id!)
+                          : await DatabaseHelper.instance.remove(e.id!);
+                      setState(() {
+                        nameController.text = "";
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                      child: buildRow(e),
+                    ),
 
-                //  ListTile(
-                //   leading: Text(
-                //     e.name.toString(),
-                //   ),
-                //   trailing: Container(child: Text("1")),
+                    //  ListTile(
+                    //   leading: Text(
+                    //     e.name.toString(),
+                    //   ),
+                    //   trailing: Container(child: Text("1")),
 
-                // ),
-              );
-            }).toList());
-          },
+                    // ),
+                  );
+                }).toList());
+              },
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {

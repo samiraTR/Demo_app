@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           (MaterialPageRoute(
-                              builder: (context) => GraphHomePage())),
+                              builder: (context) => MyHomePage())),
                           (Route<dynamic> route) => false);
                       print("login");
                     },

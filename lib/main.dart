@@ -18,8 +18,8 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoAdapter());
   await Hive.openBox<ToDo>("todoList");
-  await Firestore.initialize(projectID);
-  // await Firebase.initializeApp();
+  // await Firestore.initialize(projectID);
+  await Firebase.initializeApp();
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // try {

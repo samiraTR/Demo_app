@@ -36,7 +36,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    loc.Location().getLatLong();
+    // loc.Location().getLatLong();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
