@@ -1,4 +1,5 @@
 import 'package:demo_app/Ui/Message/friends_screen.dart';
+import 'package:demo_app/Ui/audio_player.dart';
 import 'package:demo_app/Ui/hierarchy_page.dart';
 import 'package:demo_app/Ui/todo_page.dart';
 import 'package:demo_app/bloc/counter_bloc.dart';
@@ -83,24 +84,52 @@ class MyHomePageState extends State<MyHomePage> {
               const Spacer(),
               Align(
                 alignment: Alignment.bottomLeft,
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.message,
-                      color: Colors.blue,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FriendListScreen(),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.message,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const FriendListScreen(),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.mic,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AudioScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )
@@ -129,36 +158,37 @@ class MyHomePageState extends State<MyHomePage> {
                   return const Text("No Grocery List");
                 }
                 return ListView(
+                    shrinkWrap: true,
                     children: snapshot.data!.map((e) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        nameController.text = e.name.toString();
-                        selectedId = e.id!;
-                      });
-                    },
-                    onLongPress: () async {
-                      e.id == null
-                          ? await DatabaseHelper.instance.remove(e.id!)
-                          : await DatabaseHelper.instance.remove(e.id!);
-                      setState(() {
-                        nameController.text = "";
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
-                      child: buildRow(e),
-                    ),
+                      return InkWell(
+                        onTap: () {
+                          setState(() {
+                            nameController.text = e.name.toString();
+                            selectedId = e.id!;
+                          });
+                        },
+                        onLongPress: () async {
+                          e.id == null
+                              ? await DatabaseHelper.instance.remove(e.id!)
+                              : await DatabaseHelper.instance.remove(e.id!);
+                          setState(() {
+                            nameController.text = "";
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                          child: buildRow(e),
+                        ),
 
-                    //  ListTile(
-                    //   leading: Text(
-                    //     e.name.toString(),
-                    //   ),
-                    //   trailing: Container(child: Text("1")),
+                        //  ListTile(
+                        //   leading: Text(
+                        //     e.name.toString(),
+                        //   ),
+                        //   trailing: Container(child: Text("1")),
 
-                    // ),
-                  );
-                }).toList());
+                        // ),
+                      );
+                    }).toList());
               },
             ),
           ],
