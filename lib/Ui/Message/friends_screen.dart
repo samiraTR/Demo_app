@@ -5,7 +5,8 @@ import 'package:demo_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class FriendListScreen extends StatefulWidget {
-  const FriendListScreen({super.key});
+  final messages;
+  const FriendListScreen({super.key, this.messages});
 
   @override
   State<FriendListScreen> createState() => _FriendListScreenState();
@@ -36,6 +37,7 @@ class _FriendListScreenState extends State<FriendListScreen> {
           if (snapshot.hasError) {
             return Text(" ${snapshot.error}");
           } else if (snapshot.hasData) {
+            print(widget.messages);
             return ListView.builder(
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
