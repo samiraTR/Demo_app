@@ -99,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 builder: (context) => const RegisterScreen(),
                               )),
                             );
-                            print("VOGAS");
                           })
                   ]),
                 )

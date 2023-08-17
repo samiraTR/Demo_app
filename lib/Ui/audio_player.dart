@@ -28,9 +28,12 @@ class _AudioScreenState extends State<AudioScreen> {
   void initState() {
     super.initState();
     audioPlayer.onPlayerStateChanged.listen((event) {
-      setState(() {
-        isPlaying = event == PlayerState.playing;
-      });
+      if (mounted) {
+        setState(() {
+          isPlaying = event == PlayerState.playing;
+          audioPlayer.setVolume(1.0);
+        });
+      }
     });
 
     audioPlayer.onDurationChanged.listen((newDur) {
@@ -112,12 +115,16 @@ class _AudioScreenState extends State<AudioScreen> {
                       } else {
                         String url =
                             "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3";
-                        await audioPlayer.play(UrlSource(url));
+                        await audioPlayer.play(UrlSource(url),
+                            volume: 100.0,
+                            balance: 90.0,
+                            mode: PlayerMode.mediaPlayer);
                         await audioPlayer.resume();
                       }
                     },
-                    icon:
-                        !isPlaying ? Icon(Icons.play_arrow) : Icon(Icons.pause),
+                    icon: !isPlaying
+                        ? const Icon(Icons.play_arrow)
+                        : const Icon(Icons.pause),
                   ),
                 ),
                 Text(formatDuration(duration - position)),

@@ -39,7 +39,7 @@ class _HierarchyScreenState extends State<HierarchyScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-                key: ValueKey(4),
+                key: const ValueKey(4),
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -52,7 +52,7 @@ class _HierarchyScreenState extends State<HierarchyScreen> {
                           color: Colors.amber,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
-                          child: ListTile(
+                          child: const ListTile(
                             leading: Text("Leading"),
                             trailing: Text("trailing"),
                           ),
@@ -91,22 +91,22 @@ class _HierarchyScreenState extends State<HierarchyScreen> {
                                                 () {})
                                             .then((s) {
                                           _controller.animateTo(200,
-                                              duration:
-                                                  Duration(milliseconds: 500),
+                                              duration: const Duration(
+                                                  milliseconds: 500),
                                               curve: Curves.ease);
                                         });
                                       }
                                       return false;
                                     },
                                     child: ListView.builder(
-                                      key: ValueKey(2),
+                                      key: const ValueKey(2),
                                       itemCount: 10,
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         return SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: Row(
-                                            children: [
+                                            children: const [
                                               Text("data                    "),
                                               Text("data                    "),
                                               Text("data                    "),
@@ -120,10 +120,10 @@ class _HierarchyScreenState extends State<HierarchyScreen> {
                                       // scrollDirection: Axis.horizontal,
                                     ),
                                   ),
-                                  Text("datat   "),
-                                  Text("datat   "),
-                                  Text("datat   "),
-                                  Text("datat   ")
+                                  const Text("datat   "),
+                                  const Text("datat   "),
+                                  const Text("datat   "),
+                                  const Text("datat   ")
                                 ],
                               );
                             }),

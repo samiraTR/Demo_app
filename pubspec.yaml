@@ -49,6 +49,8 @@ dependencies:
   url_launcher: ^6.1.9
   flutter_local_notifications:
   audioplayers:
+  flutter_sound:
+  record:
   file_picker:
   firebase_messaging:
 

@@ -1,6 +1,8 @@
 import 'package:demo_app/Ui/Message/friends_screen.dart';
 import 'package:demo_app/Ui/audio_player.dart';
 import 'package:demo_app/Ui/hierarchy_page.dart';
+import 'package:demo_app/Ui/pomodoro.dart';
+import 'package:demo_app/Ui/sound_recorder.dart';
 import 'package:demo_app/Ui/todo_page.dart';
 import 'package:demo_app/bloc/counter_bloc.dart';
 import 'package:demo_app/bloc/counter_event.dart';
@@ -104,6 +106,26 @@ class MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const FriendListScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.watch_later,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PomodoroScreen(),
                               ),
                             );
                           },
