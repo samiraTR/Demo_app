@@ -26,15 +26,13 @@ class Location {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
 
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 
-  getLatLong() {
+  getLatLong() async {
     Future<Position> data = _determinePosition();
     data.then((value) {
       lat = value.latitude;
@@ -43,16 +41,17 @@ class Location {
       // print(lat);
 
       getAddress(value.latitude, value.longitude);
+      print("address $address");
     }).catchError((error) {
       print("Error $error");
     });
 
-    return [lat, long];
+    return [lat, long, address];
   }
 
   getAddress(lat, long) async {
     List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
 
-    address = placemarks[0].street! + " " + placemarks[0].country!;
+    return address = placemarks[0].street! + " " + placemarks[0].country!;
   }
 }

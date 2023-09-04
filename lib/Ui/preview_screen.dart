@@ -1,13 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PreviewScreen extends StatefulWidget {
+  Function callBack;
   String imgPath;
 
   PreviewScreen({
     Key? key,
+    required this.callBack,
     required this.imgPath,
   }) : super(key: key);
 
@@ -37,6 +40,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  widget.callBack(widget.imgPath);
 
                   // getBytes().then((bytes) {});
                 },

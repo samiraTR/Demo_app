@@ -1,12 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:camera/camera.dart';
-import 'package:demo_app/Ui/preview_screen.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:path/path.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:demo_app/Ui/preview_screen.dart';
+
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  Function callBack;
+  CameraScreen({
+    Key? key,
+    required this.callBack,
+  }) : super(key: key);
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -111,11 +117,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 padding: const EdgeInsets.all(15),
                 color: Colors.black,
                 child: Row(
-                  children: [
-                    cameraToggleRowWidget(),
-                    cameraControlWidget(context),
-                    const Spacer()
-                  ],
+                  children: [cameraToggleRowWidget(), cameraControlWidget(context), const Spacer()],
                 ),
               ),
             )
@@ -130,8 +132,7 @@ class _CameraScreenState extends State<CameraScreen> {
     if (cameraController == null || !cameraController.value.isInitialized) {
       return const Text(
         "Loading",
-        style: TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
       );
     }
 
@@ -188,8 +189,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void onSwitchCamera() {
-    selectedCameraIndex =
-        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
+    selectedCameraIndex = selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
 
     CameraDescription selectedCamera = cameras[selectedCameraIndex];
     initCameraController(selectedCamera);
@@ -199,17 +199,21 @@ class _CameraScreenState extends State<CameraScreen> {
     final CameraController? cameraController = controller;
 
     try {
-      final path =
-          join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
+      final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
 
       XFile picture = await cameraController!.takePicture();
       picture.saveTo(path);
       // await cameraController?.takePicture(path);
-      print("path");
+      print(path);
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => PreviewScreen(imgPath: path)));
+              builder: (context) => PreviewScreen(
+                    imgPath: path,
+                    callBack: (value) {
+                      widget.callBack(value);
+                    },
+                  )));
     } catch (e) {
       print(e);
     }

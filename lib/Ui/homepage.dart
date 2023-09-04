@@ -94,8 +94,75 @@ class MyHomePageState extends State<MyHomePage> {
                       Container(
                         height: 50,
                         width: 50,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.camera,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const FriendListScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      // Container(
+                      //   height: 50,
+                      //   width: 50,
+                      //   decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                      //   child: IconButton(
+                      //     icon: const Icon(
+                      //       Icons.watch_later,
+                      //       color: Colors.blue,
+                      //     ),
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => const PomodoroScreen(),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.record_voice_over_rounded,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SoundRecorderScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                         child: IconButton(
                           icon: const Icon(
                             Icons.message,
@@ -114,8 +181,7 @@ class MyHomePageState extends State<MyHomePage> {
                       Container(
                         height: 50,
                         width: 50,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                         child: IconButton(
                           icon: const Icon(
                             Icons.watch_later,
@@ -134,8 +200,7 @@ class MyHomePageState extends State<MyHomePage> {
                       Container(
                         height: 50,
                         width: 50,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                         child: IconButton(
                           icon: const Icon(
                             Icons.mic,
@@ -190,9 +255,7 @@ class MyHomePageState extends State<MyHomePage> {
                           });
                         },
                         onLongPress: () async {
-                          e.id == null
-                              ? await DatabaseHelper.instance.remove(e.id!)
-                              : await DatabaseHelper.instance.remove(e.id!);
+                          e.id == null ? await DatabaseHelper.instance.remove(e.id!) : await DatabaseHelper.instance.remove(e.id!);
                           setState(() {
                             nameController.text = "";
                           });
@@ -218,11 +281,7 @@ class MyHomePageState extends State<MyHomePage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             if (nameController.text != "") {
-              selectedId == null
-                  ? await DatabaseHelper.instance
-                      .add(Grocery(name: nameController.text))
-                  : await DatabaseHelper.instance.update(
-                      Grocery(name: nameController.text, id: selectedId));
+              selectedId == null ? await DatabaseHelper.instance.add(Grocery(name: nameController.text)) : await DatabaseHelper.instance.update(Grocery(name: nameController.text, id: selectedId));
             }
             setState(
               () {
